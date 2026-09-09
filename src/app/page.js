@@ -1,242 +1,72 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
+import { SYLLABUS_DATA } from './syllabusData';
 
-// முழுமையான 10 அலகுகள் (Paper 1, CS, Commerce)
+// அதிகாரப்பூர்வ UGC NET பாடத்திட்டம் & முக்கிய தலைப்புகள்
 const SYLLABUS_DATA = {
   'Paper 1': [
     {
       unit: 'Unit 1: Teaching Aptitude',
       topics: [
-        { name: 'Levels of Teaching', concept: 'Memory Level (Herbart: recall, facts), Understanding Level (Morrison: relationships, examples), Reflective Level (Hunt: problem-solving, heuristic inquiry).' },
-        { name: 'Learner Characteristics', concept: 'Adolescent and adult learners (academic, social, emotional, cognitive). Field-dependent (holistic) vs Field-independent (analytical).' },
-        { name: 'Factors Affecting Teaching & Methods', concept: 'Teacher-centered vs Learner-centered methods. Offline vs Online methods (SWAYAM, Swayam Prabha, MOOCs).' },
-        { name: 'Evaluation Systems', concept: 'Formative (during process), Summative (end term), Norm-referenced, Criterion-referenced. CBCS and Computer Based Testing.' }
+        { name: 'Levels of Teaching', concept: 'Memory (Herbart: recall, facts), Understanding (Morrison: relationships, examples), Reflective (Hunt: problem-solving, heuristic inquiry).' },
+        { name: 'Learner Characteristics', concept: 'Cognitive, affective, social traits. Field-Dependent (holistic, cooperative) vs Field-Independent (analytical, independent).' },
+        { name: 'Methods & Evaluation', concept: 'Teacher-centered vs Learner-centered. CBCS grading system, Formative (during process) vs Summative (end term) evaluation.' }
       ]
     },
     {
       unit: 'Unit 2: Research Aptitude',
       topics: [
-        { name: 'Types & Approaches of Research', concept: 'Fundamental (theory building), Applied (practical solutions), Action Research (immediate classroom problem solving). Positivism vs Post-positivism.' },
-        { name: 'Methods & Steps of Research', concept: 'Experimental, Descriptive, Historical, Qualitative vs Quantitative. Hypothesis formulation, sampling methods, APA/MLA referencing.' },
-        { name: 'Research Ethics & Plagiarism', concept: 'UGC Plagiarism Regulations: Level 0 (<=10%), Level 1 (10-40%), Level 2 (40-60% withdrawal), Level 3 (>60% disciplinary action).' }
-      ]
-    },
-    {
-      unit: 'Unit 3: Comprehension',
-      topics: [
-        { name: 'Reading Comprehension', concept: 'Passage decoding, thematic extraction, factual inference, and contextual analysis.' }
-      ]
-    },
-    {
-      unit: 'Unit 4: Communication',
-      topics: [
-        { name: 'Communication: Meaning & Types', concept: 'Verbal and Non-verbal, Interpersonal, Intrapersonal, Group, and Mass-media communication.' },
-        { name: 'Classroom Communication & Barriers', concept: 'Pedagogical communication, psychological, semantic, physical, and socio-cultural barriers.' }
-      ]
-    },
-    {
-      unit: 'Unit 5: Mathematical Reasoning & Aptitude',
-      topics: [
-        { name: 'Number & Letter Series', concept: 'Number series patterns, alphabet series, coding-decoding, and relationship networks.' },
-        { name: 'Mathematical Concepts', concept: 'Fraction, Time & Distance, Ratio & Proportion, Percentage, Profit & Loss, Simple & Compound Interest, Averages.' }
+        { name: 'Types of Research', concept: 'Fundamental (theory creation), Applied (solution testing), Action research (immediate classroom problem solving - Plan-Act-Observe-Reflect).' },
+        { name: 'Research Ethics & Plagiarism', concept: 'UGC Plagiarism Levels: Level 0 (<=10%), Level 1 (10-40% penalties), Level 2 (40-60% withdrawal), Level 3 (>60% suspension).' }
       ]
     },
     {
       unit: 'Unit 6: Logical Reasoning',
       topics: [
-        { name: 'Square of Opposition & Deductive Logic', concept: 'Categorical propositions: Contradictories, Contraries, Sub-contraries, Subalternation. Fallacies and Syllogisms.' },
-        { name: 'Indian Logic: Pramanas', concept: 'Pratyaksha (Perception), Anumana (Inference), Upamana (Comparison), Sabda (Word/Testimony), Arthapatti (Implication), Anupalabdhi (Non-apprehension).' },
-        { name: 'Structure of Anumana & Hetvabhasa', concept: 'Vyapti (invariable relation between Hetu and Sadhya), Paksha. Fallacies of inference (Hetvabhasa).' }
-      ]
-    },
-    {
-      unit: 'Unit 7: Data Interpretation',
-      topics: [
-        { name: 'Quantitative & Qualitative Data', concept: 'Data sources, acquisition, and classification.' },
-        { name: 'Graphical Mapping & Calculation', concept: 'Bar charts, Histograms, Pie charts, Table charts, Line charts. Percentage and ratio based data interpretation.' }
-      ]
-    },
-    {
-      unit: 'Unit 8: Information & Communication Technology (ICT)',
-      topics: [
-        { name: 'ICT Abbreviations & Basics', concept: 'General digital terms, hardware/software taxonomy, memory units (Byte, KB, MB, GB, TB, PB).' },
-        { name: 'Internet, Intranet & Web Protocols', concept: 'IP address, DNS, HTTP, HTTPS, FTP, SMTP, POP3, IMAP. Video conferencing systems.' },
-        { name: 'Digital Initiatives in Higher Education', concept: 'SWAYAM, SWAYAM Prabha, National Digital Library (NDL), Shodhganga, Shodhgangotri, e-PG Pathshala.' }
-      ]
-    },
-    {
-      unit: 'Unit 9: People, Development & Environment',
-      topics: [
-        { name: 'MDGs & SDGs', concept: 'Millennium Development Goals (8 goals by 2015), Sustainable Development Goals (17 goals, 169 targets by 2030).' },
-        { name: 'Environmental Pollution & Hazards', concept: 'Air, water, soil, and noise pollutants. Primary vs Secondary pollutants. Climate change and global warming.' },
-        { name: 'International Agreements & Policies', concept: 'EPA 1986, Montreal Protocol, Kyoto Protocol, Paris Agreement, International Solar Alliance (ISA).' }
-      ]
-    },
-    {
-      unit: 'Unit 10: Higher Education System',
-      topics: [
-        { name: 'Ancient Higher Learning Institutions', concept: 'Takshashila, Nalanda, Valabhi, Vikramashila. Ancient education systems and foreign travelers accounts.' },
-        { name: 'Post-Independence Higher Education Evolution', concept: 'Radhakrishnan Commission (1948), Mudaliar Commission (1952), Kothari Commission (1964), NEP 1986, and NEP 2020.' },
-        { name: 'Regulatory Bodies & Governance', concept: 'Role of UGC, AICTE, NAAC, NIRF. Higher Education Commission of India (HECI) under NEP 2020.' }
+        { name: 'Indian Logic: Pramanas', concept: 'Pratyaksha (Perception), Anumana (Inference), Upamana (Comparison), Sabda (Word/Authority), Arthapatti (Presumption), Anupalabdhi (Non-apprehension). Vyapti: invariable relation between Hetu and Sadhya.' }
       ]
     }
   ],
-
   'Computer Science': [
     {
-      unit: 'Unit 1: Discrete Structures & Optimization',
+      unit: 'Unit 8: Theory of Computation',
       topics: [
-        { name: 'Sets, Logic & Relations', concept: 'Propositional & Predicate Logic, Equivalence Relations, Partial Orders, Lattices, Boolean Algebra.' },
-        { name: 'Graph Theory & Combinatorics', concept: 'Euler & Hamiltonian Graphs, Planar Graphs, Graph Coloring, Spanning Trees, Pigeonhole Principle.' },
-        { name: 'Optimization & Linear Programming', concept: 'Simplex Method, Duality, Transportation & Assignment Problems.' }
+        { name: 'Regular Languages & Automata', concept: 'DFA vs NFA equivalence. Regular expressions, Pumping Lemma for regular languages. Decidable: Emptiness, Finiteness, Equivalence, Membership.' },
+        { name: 'Decidability & Turing Machines', concept: 'Chomsky Hierarchy (Type 3 to Type 0). Halting Problem is Recursively Enumerable but undecidable. Post Correspondence Problem (PCP) is undecidable.' }
       ]
     },
     {
-      unit: 'Unit 2: Computer System Architecture',
+      unit: 'Unit 5: Operating Systems',
       topics: [
-        { name: 'Digital Logic & Circuit Design', concept: 'Combinational (Adders, Multiplexers, Decoders) and Sequential circuits (Flip-flops, Registers, Counters).' },
-        { name: 'Instruction Pipelining & Hazards', concept: 'Pipelining hazards: Structural, Data (RAW, WAR, WAW), Control. Branch prediction, RISC vs CISC.' },
-        { name: 'Memory Hierarchy & I/O', concept: 'Direct, Associative, Set-associative Cache Mapping. Cache coherence, DMA, Interrupt handling.' }
-      ]
-    },
-    {
-      unit: 'Unit 3: Programming Languages & Graphics',
-      topics: [
-        { name: 'Programming Paradigms & OOP', concept: 'Imperative, Functional, Object-Oriented paradigms. Polymorphism, Inheritance, Encapsulation in C++ and Java.' },
-        { name: 'Computer Graphics & Transformations', concept: 'Raster scan, Bresenham line and circle algorithms, 2D/3D affine transformations, Cohen-Sutherland clipping.' }
-      ]
-    },
-    {
-      unit: 'Unit 4: Database Management Systems',
-      topics: [
-        { name: 'ER Modeling & Relational Algebra', concept: 'Entity-Relationship models, Relational algebra operators, Tuple Relational Calculus.' },
-        { name: 'Normalization & Functional Dependencies', concept: '1NF, 2NF, 3NF, BCNF, 4NF, 5NF. Dependency preservation, Lossless join decomposition.' },
-        { name: 'Transactions & Concurrency Control', concept: 'ACID properties, Serializability (Conflict & View), 2-Phase Locking (2PL), Deadlock handling, Timestamp ordering.' }
-      ]
-    },
-    {
-      unit: 'Unit 5: System Software & Operating Systems',
-      topics: [
-        { name: 'Process Synchronization & Semaphores', concept: 'Critical section, Mutex, Counting semaphores, Classical synchronization problems (Producer-Consumer, Dining Philosophers).' },
-        { name: 'CPU Scheduling & Deadlocks', concept: 'FCFS, SJF, Round Robin, Priority scheduling. Banker algorithm, Resource Allocation Graphs, Deadlock avoidance.' },
-        { name: 'Memory Management & Paging', concept: 'Paging, Segmentation, TLB hit ratio, Page fault handling. Belady anomaly in FIFO, Optimal vs LRU page replacement.' }
-      ]
-    },
-    {
-      unit: 'Unit 6: Software Engineering',
-      topics: [
-        { name: 'Process Models & Agile', concept: 'Waterfall, Spiral, V-model, Agile Manifesto, Scrum principles.' },
-        { name: 'Software Estimation & Quality Metrics', concept: 'COCOMO (Basic, Intermediate, Detailed), Function Points, Cyclomatic Complexity V(G) = E - N + 2P.' },
-        { name: 'Testing Techniques', concept: 'Black-box vs White-box, Boundary Value Analysis, Equivalence Partitioning, Integration and Regression testing.' }
-      ]
-    },
-    {
-      unit: 'Unit 7: Data Structures & Algorithms',
-      topics: [
-        { name: 'Trees, Graphs & Heaps', concept: 'Binary Search Trees, AVL Trees, B-Trees, B+ Trees, Min/Max Heaps, Trie structures.' },
-        { name: 'Algorithm Paradigms & Complexity', concept: 'Divide & Conquer, Dynamic Programming, Greedy Method, Backtracking, Branch & Bound. Asymptotic notations.' },
-        { name: 'Graph Algorithms & NP-Completeness', concept: 'Dijkstra (O(E + V log V) with Fibonacci Heap), Bellman-Ford, Kruskal, Prim. P, NP, NP-Complete, NP-Hard proofs.' }
-      ]
-    },
-    {
-      unit: 'Unit 8: Theory of Computation & Compilers',
-      topics: [
-        { name: 'Finite Automata & Regular Languages', concept: 'DFA, NFA, Regular Expressions, Pumping Lemma for regular sets. Decidability and closure properties.' },
-        { name: 'Context-Free Languages & Pushdown Automata', concept: 'CFGs, Ambiguity, Chomsky Normal Form (CNF), Greibach Normal Form (GNF), Deterministic vs Non-deterministic PDA.' },
-        { name: 'Turing Machines & Decidability', concept: 'Chomsky Hierarchy. Halting Problem is Recursively Enumerable but undecidable. Post Correspondence Problem (PCP).' },
-        { name: 'Compiler Phases & Parsing', concept: 'Lexical analysis, LL(1) parsing, LR parsing (SLR, CLR, LALR), Intermediate representations, Code optimization.' }
-      ]
-    },
-    {
-      unit: 'Unit 9: Data Communication & Networks',
-      topics: [
-        { name: 'Network Models & Physical Layer', concept: 'OSI 7-layer architecture, TCP/IP protocol suite, Transmission media, Modulation techniques.' },
-        { name: 'Data Link & Network Protocols', concept: 'Error detection/correction (CRC, Hamming), Sliding Window (Stop-and-Wait, Go-Back-N, Selective Repeat). IPv4/IPv6, CIDR Subnetting.' },
-        { name: 'Transport Layer & Security', concept: 'TCP 3-way handshake, UDP, Flow control (Leaky Bucket, Token Bucket), Congestion control, RSA, AES, Digital Signatures.' }
+        { name: 'Deadlock & Concurrency', concept: '4 Necessary conditions: Mutual Exclusion, Hold & Wait, No Preemption, Circular Wait. Safe state check: Bankers Algorithm. Deadlock condition: Sum(Max_i) < R + N.' },
+        { name: 'Memory & Virtual Memory', concept: 'Paging, TLB hit ratio, Page fault handling. Belady Anomaly in FIFO (more frames = more page faults). LRU stack property.' }
       ]
     },
     {
       unit: 'Unit 10: Artificial Intelligence',
       topics: [
-        { name: 'Search Algorithms', concept: 'Uninformed (BFS, DFS) vs Informed search. A* algorithm: f(n) = g(n) + h(n). Admissible (never overestimates) and Monotonic heuristics.' },
-        { name: 'Adversarial Search & Fuzzy Systems', concept: 'Minimax algorithm, Alpha-Beta pruning. Fuzzy sets, Membership functions, Defuzzification methods.' },
-        { name: 'Machine Learning Fundamentals', concept: 'Supervised, Unsupervised, Reinforcement Learning. Perceptrons, Multi-layer feedforward networks, Backpropagation.' }
+        { name: 'Heuristic Search (A*)', concept: 'A* evaluation f(n) = g(n) + h(n). Admissible: h(n) <= h*(n) (never overestimates). Monotonicity/Consistency guarantees optimal path.' }
       ]
     }
   ],
-
   'Commerce': [
     {
-      unit: 'Unit 1: Business Environment & International Business',
+      unit: 'Unit 2: Accounting and Auditing',
       topics: [
-        { name: 'Business Environment Elements', concept: 'Economic systems, Micro & macro environment, Consumer Protection Act 2019, FEMA provisions.' },
-        { name: 'International Trade Theories', concept: 'Absolute Advantage, Comparative Advantage, Heckscher-Ohlin Theory, Product Life Cycle Theory.' },
-        { name: 'International Economic Institutions', concept: 'WTO, IMF, World Bank, UNCTAD, Regional trading blocs (EU, NAFTA, ASEAN, SAARC).' }
-      ]
-    },
-    {
-      unit: 'Unit 2: Accounting & Auditing',
-      topics: [
-        { name: 'Accounting Standards & Corporate Accounts', concept: 'Ind AS, IFRS, Share valuation, Accounting for corporate restructuring, Amalgamation.' },
-        { name: 'Cost & Management Accounting', concept: 'Marginal costing, Break-even analysis, Standard costing, Variance analysis, Budgetary control.' },
-        { name: 'Auditing Standards & Procedures', concept: 'Types of audit, Audit report types, Internal check & control, Vouching, Environmental and forensic audit.' }
+        { name: 'Corporate Valuation & Standards', concept: 'Ind AS 115 5-step revenue model. AS 22 accounting for income taxes. Ratio analysis (Liquidity, Solvency, Turnover, Profitability).' }
       ]
     },
     {
       unit: 'Unit 3: Business Economics',
       topics: [
-        { name: 'Demand & Consumer Equilibrium', concept: 'Law of Demand, Elasticity of demand, Indifference curve analysis, Consumer surplus, MRSxy = Px/Py.' },
-        { name: 'Production, Cost & Market Structures', concept: 'Law of Variable Proportions, Isoquants, Perfect competition, Monopoly, Monopolistic competition, Oligopoly models.' }
+        { name: 'Consumer Behavior & Indifference Curves', concept: 'Law of Diminishing Marginal Utility. Consumer equilibrium: MRS_xy = Px/Py (tangency condition with convexity).' }
       ]
     },
     {
-      unit: 'Unit 4: Business Finance',
+      unit: 'Unit 10: Income Tax & Corporate Tax',
       topics: [
-        { name: 'Cost of Capital & Capital Structure', concept: 'Cost of debt, equity, preference shares. WACC. Net Income, Net Operating Income, Traditional, MM Hypothesis.' },
-        { name: 'Capital Budgeting Decisions', concept: 'Payback period, NPV, IRR, Profitability Index. Working capital management strategies.' }
-      ]
-    },
-    {
-      unit: 'Unit 5: Business Statistics & Research Methods',
-      topics: [
-        { name: 'Descriptive Statistics & Probability', concept: 'Central tendency, Dispersion, Skewness, Binomial, Poisson, Normal distributions.' },
-        { name: 'Hypothesis Testing', concept: 'Parametric tests (Z-test, t-test, ANOVA), Non-parametric tests (Chi-square, Mann-Whitney U test).' }
-      ]
-    },
-    {
-      unit: 'Unit 6: Business Management & HRM',
-      topics: [
-        { name: 'Management Principles & Functions', concept: 'Planning, Organizing, Directing, Controlling, Span of control, Decision making models.' },
-        { name: 'Human Resource Management', concept: 'Recruitment, Selection, Training, Performance appraisal, Job evaluation, Motivation theories.' }
-      ]
-    },
-    {
-      unit: 'Unit 7: Banking & Financial Institutions',
-      topics: [
-        { name: 'Indian Banking System & RBI', concept: 'Commercial banks, RRBs, Cooperative banks, RBI monetary policy instruments (Repo, Reverse Repo, CRR, SLR).' },
-        { name: 'Financial Markets & Reforms', concept: 'Money vs Capital market, SEBI regulations, Basel I, II, III norms, NPA resolution frameworks, UPI and digital banking.' }
-      ]
-    },
-    {
-      unit: 'Unit 8: Marketing Management',
-      topics: [
-        { name: 'Marketing Concepts & STP', concept: 'Marketing mix (4Ps and 7Ps), Segmentation, Targeting, Positioning strategies.' },
-        { name: 'Product & Pricing Decisions', concept: 'Product Life Cycle (PLC), New product development, Pricing methods, Promotion mix, Distribution channels.' }
-      ]
-    },
-    {
-      unit: 'Unit 9: Legal Aspects of Business',
-      topics: [
-        { name: 'Contract & Commercial Acts', concept: 'Indian Contract Act 1872, Sale of Goods Act 1930, Negotiable Instruments Act 1881.' },
-        { name: 'Company Law & IPR', concept: 'Companies Act 2013, Competition Act 2002, Patents, Copyrights, Trademarks, IT Act 2000.' }
-      ]
-    },
-    {
-      unit: 'Unit 10: Income-tax & Corporate Tax Planning',
-      topics: [
-        { name: 'Residential Status & Income Heads', concept: 'Section 6 residential status (ROR, RNOR, NR). 5 Heads of income: Salary, House Property, PGBP, Capital Gains, Other Sources.' },
-        { name: 'Deductions, MAT & Tax Planning', concept: 'Section 80C to 80U deductions (80D medical premium), Minimum Alternate Tax (MAT), Tax avoidance vs evasion vs planning.' }
+        { name: 'Residential Status & Tax Scope', concept: 'Section 6: Resident (182 days OR 60+365 days). ROR criteria: Resident in >= 2 of 10 years AND 730 days in 7 preceding years. Section 80D medical deductions.' }
       ]
     }
   ]
@@ -255,6 +85,7 @@ export default function UGCPlatform() {
   const [testHistory, setTestHistory] = useState([]);
   const [isRetestActive, setIsRetestActive] = useState(false);
 
+  // வினாக்களை லோட் செய்தல் (Paper மற்றும் Topic-wise filtering)
   const fetchQuestions = async (topicFilter = 'All') => {
     setLoading(true);
     let query = supabase.from('questions').select('*').eq('paper', selectedPaper);
@@ -364,7 +195,7 @@ export default function UGCPlatform() {
             </div>
             <div>
               <h1 className="font-extrabold text-slate-900 text-sm leading-tight">MasterNET Prep Engine</h1>
-              <p className="text-[10px] text-slate-500">10-Unit Complete Syllabus & Diagnostic System</p>
+              <p className="text-[10px] text-slate-500">Syllabus & Topic-wise Diagnostic System</p>
             </div>
           </div>
           <button 
@@ -398,27 +229,27 @@ export default function UGCPlatform() {
           </div>
         ) : (
           <>
-            {/* SCREEN 1: SYLLABUS BROWSER & ALL 10 UNITS */}
+            {/* SCREEN 1: SYLLABUS BROWSER & UNIT SELECTION */}
             {screen === 'syllabus' && (
               <div className="space-y-4">
                 <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm">
                   <div className="flex justify-between items-center">
-                    <span className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">{selectedPaper} • Complete 10 Units</span>
+                    <span className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">{selectedPaper} Syllabus Structure</span>
                     <button 
                       onClick={() => { setSelectedTopic('All'); fetchQuestions('All'); setScreen('test'); }}
                       className="text-xs font-bold text-indigo-600 hover:underline">
-                      Mock Test All Units Combined ➔
+                      Practice All Units Combined ({activeQuestions.length} PYQs) ➔
                     </button>
                   </div>
                   <h2 className="text-xl font-black text-slate-900 mt-1">Select Unit & Topic to Master</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">Choose any topic below to read its core concepts and practice verified PYQs.</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Choose an individual topic to review concepts and solve topic-specific PYQs.</p>
                 </div>
 
                 <div className="space-y-4">
                   {SYLLABUS_DATA[selectedPaper]?.map((unitItem, uIdx) => (
                     <div key={uIdx} className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3">
                       <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-slate-900 text-white font-black text-xs flex items-center justify-center">
+                        <span className="w-5 h-5 rounded-full bg-slate-900 text-white font-black text-[10px] flex items-center justify-center">
                           {uIdx + 1}
                         </span>
                         <h3 className="font-extrabold text-slate-900 text-sm">{unitItem.unit}</h3>
@@ -446,7 +277,7 @@ export default function UGCPlatform() {
               </div>
             )}
 
-            {/* SCREEN 2: TOPIC CONCEPT CAPSULE */}
+            {/* SCREEN 2: TOPIC CONCEPT CAPSULE & PRE-TEST BRIEF */}
             {screen === 'notes' && (
               <div className="space-y-5">
                 <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-2">
@@ -454,14 +285,14 @@ export default function UGCPlatform() {
                     <button 
                       onClick={() => setScreen('syllabus')}
                       className="text-xs font-bold text-slate-500 hover:text-slate-800">
-                      ← Back to Syllabus Map
+                      ← Back to Syllabus
                     </button>
                     <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                       Topic Focus
                     </span>
                   </div>
                   <h2 className="text-xl font-black text-slate-900">{selectedTopic}</h2>
-                  <p className="text-xs text-slate-500">Review concept summary before attempting questions.</p>
+                  <p className="text-xs text-slate-500">Review concept brief before beginning the topic-focused assessment.</p>
                 </div>
 
                 <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm space-y-3">
@@ -483,7 +314,7 @@ export default function UGCPlatform() {
               </div>
             )}
 
-            {/* SCREEN 3: TEST ENGINE */}
+            {/* SCREEN 3: TOPIC-WISE TEST ENGINE */}
             {screen === 'test' && activeQuestions.length > 0 && (
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-5">
                 <div className="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -548,7 +379,7 @@ export default function UGCPlatform() {
               </div>
             )}
 
-            {/* SCREEN 4: ANALYTICS & HISTORY */}
+            {/* SCREEN 4: TOPIC DIAGNOSTIC ANALYTICS */}
             {screen === 'analytics' && (
               <div className="space-y-5">
                 <div className={`p-4 sm:p-6 rounded-2xl border ${isConceptCleared ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'} shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3`}>
@@ -665,7 +496,7 @@ export default function UGCPlatform() {
                   </div>
                 )}
 
-                {/* Solution Modal */}
+                {/* Explanation Modal */}
                 {selectedModalQ && (
                   <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
                     <div className="bg-white max-w-sm w-full rounded-2xl p-5 shadow-xl border border-slate-100 space-y-3 text-xs">
