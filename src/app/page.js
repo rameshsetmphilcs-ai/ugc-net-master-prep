@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { supabase } from './lib/supabase';
 import { SYLLABUS_DATA } from './syllabusData';
 
@@ -82,7 +82,7 @@ export default function UGCPlatform() {
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-800 pb-20">
-      {/* Navigation Header */}
+      {/* Header */}
       <header className="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-30 flex justify-between items-center shadow-sm">
         <div className="flex items-center gap-3">
           <span className="bg-indigo-600 text-white font-black px-2.5 py-1 rounded-md text-xs">UGC</span>
@@ -102,7 +102,7 @@ export default function UGCPlatform() {
       </header>
 
       <div className="max-w-6xl mx-auto px-4 mt-6 grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Left Sidebar: 10 Units Syllabus Navigation */}
+        {/* Left Sidebar */}
         <aside className="md:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 shadow-sm h-[82vh] overflow-y-auto space-y-4">
           <h2 className="text-xs font-black uppercase text-slate-400 tracking-wider">Course Syllabus Navigator</h2>
           {SYLLABUS_DATA[selectedPaper]?.map((unitItem, uIdx) => (
@@ -135,9 +135,9 @@ export default function UGCPlatform() {
           ))}
         </aside>
 
-        {/* Main Stage: Learn -> Test -> Readiness */}
+        {/* Main Stage */}
         <main className="md:col-span-8 space-y-5">
-          {/* STEP 1: VISUAL CONCEPT CAPSULE */}
+          {/* STEP 1: LEARN STAGE */}
           {stage === 'learn' && (
             <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-8">
               <div className="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -146,7 +146,7 @@ export default function UGCPlatform() {
                     <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-700">
                       {selectedPaper}
                     </span>
-                    <span className="text-xs text-slate-400 font-bold">15-Year High Frequency Focus</span>
+                    <span className="text-xs text-slate-400 font-bold">15-Year Core Focus</span>
                   </div>
                   <h2 className="text-2xl font-black text-slate-900 mt-1">{selectedTopic}</h2>
                 </div>
@@ -158,9 +158,9 @@ export default function UGCPlatform() {
                 </button>
               </div>
 
-              {selectedTopic === 'Levels of Teaching' ? (
+              {/* TOPIC 1: Levels of Teaching */}
+              {selectedTopic === 'Levels of Teaching' && (
                 <>
-                  {/* Visual 1: 3-Tier Cognitive Hierarchy Cards */}
                   <div className="space-y-3">
                     <h3 className="text-xs font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
                       <span>🧠</span> Cognitive Hierarchy Model (Morris L. Bigge Continuum)
@@ -216,10 +216,9 @@ export default function UGCPlatform() {
                     </div>
                   </div>
 
-                  {/* Visual 2: Morrison's 5-Phase Sequence Stepper */}
                   <div className="space-y-4">
                     <h3 className="text-xs font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
-                      <span>🔄</span> Morrison's 5-Phase Mastery Cycle (Order is strictly examined)
+                      <span>🔄</span> Morrison&apos;s 5-Phase Mastery Cycle (Order is strictly examined)
                     </h3>
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
                       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
@@ -252,7 +251,6 @@ export default function UGCPlatform() {
                     </div>
                   </div>
 
-                  {/* Visual 3: Comparative Matrix */}
                   <div className="space-y-3">
                     <h3 className="text-xs font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
                       <span>📊</span> 360° Comparative Matrix
@@ -269,29 +267,28 @@ export default function UGCPlatform() {
                         </thead>
                         <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
                           <tr>
-                            <td className="py-2.5 px-3 font-bold text-slate-900">Classroom Climate</td>
-                            <td className="py-2.5 px-3 bg-amber-50/20">Authoritarian & Rigid</td>
-                            <td className="py-2.5 px-3 bg-blue-50/20">Controlled & Guided</td>
-                            <td className="py-2.5 px-3 bg-emerald-50/20 font-bold text-emerald-700">Open & Democratic</td>
+                            <td className="py-2 px-3 font-bold text-slate-900">Classroom Climate</td>
+                            <td className="py-2 px-3 bg-amber-50/20">Authoritarian & Rigid</td>
+                            <td className="py-2 px-3 bg-blue-50/20">Controlled & Guided</td>
+                            <td className="py-2 px-3 bg-emerald-50/20 font-bold text-emerald-700">Open & Democratic</td>
                           </tr>
                           <tr>
-                            <td className="py-2.5 px-3 font-bold text-slate-900">Student Role</td>
-                            <td className="py-2.5 px-3 bg-amber-50/20">Passive Listener</td>
-                            <td className="py-2.5 px-3 bg-blue-50/20">Active Inquirer</td>
-                            <td className="py-2.5 px-3 bg-emerald-50/20">Primary Driver & Creator</td>
+                            <td className="py-2 px-3 font-bold text-slate-900">Student Role</td>
+                            <td className="py-2 px-3 bg-amber-50/20">Passive Listener</td>
+                            <td className="py-2 px-3 bg-blue-50/20">Active Inquirer</td>
+                            <td className="py-2 px-3 bg-emerald-50/20">Primary Driver & Creator</td>
                           </tr>
                           <tr>
-                            <td className="py-2.5 px-3 font-bold text-slate-900">Assessment Tool</td>
-                            <td className="py-2.5 px-3 bg-amber-50/20">Recall, Matching, True/False</td>
-                            <td className="py-2.5 px-3 bg-blue-50/20">Explain relationships, Essay</td>
-                            <td className="py-2.5 px-3 bg-emerald-50/20">Problem-solving, Real Projects</td>
+                            <td className="py-2 px-3 font-bold text-slate-900">Assessment Tool</td>
+                            <td className="py-2 px-3 bg-amber-50/20">Recall, Matching, True/False</td>
+                            <td className="py-2 px-3 bg-blue-50/20">Explain relationships, Essay</td>
+                            <td className="py-2 px-3 bg-emerald-50/20">Problem-solving, Real Projects</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
                   </div>
 
-                  {/* Visual 4: Exam Trap Alert Box */}
                   <div className="p-4 rounded-xl border-l-4 border-rose-500 bg-rose-50/60 flex items-start gap-3">
                     <span className="text-xl">⚠️</span>
                     <div className="text-xs text-rose-950 space-y-1">
@@ -302,9 +299,11 @@ export default function UGCPlatform() {
                     </div>
                   </div>
                 </>
-              ) : selectedTopic === 'Learner Characteristics' ? (
+              )}
+
+              {/* TOPIC 2: Learner Characteristics */}
+              {selectedTopic === 'Learner Characteristics' && (
                 <>
-                  {/* VISUAL 1: Andragogy vs Pedagogy */}
                   <div className="space-y-3">
                     <h3 className="text-xs font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
                       <span>👥</span> Pedagogical vs Andragogical Orientation (Knowles Model)
@@ -338,7 +337,7 @@ export default function UGCPlatform() {
                             <li><strong>Academic:</strong> Self-directed; task/problem-centered rather than subject-centered.</li>
                             <li><strong>Life Experience:</strong> Rich reservoir of experiential knowledge used as learning resource.</li>
                             <li><strong>Emotional:</strong> Highly self-motivated, autonomous, pragmatic, goal-driven.</li>
-                            <li><strong>Immediate Application:</strong> Needs immediate relevance to solve current career/life problems.</li>
+                            <li><strong>Immediate Application:</strong> Needs immediate relevance to solve career/life problems.</li>
                           </ul>
                         </div>
                         <div className="mt-3 pt-2 border-t border-teal-200/60 text-[10px] font-bold text-teal-800">
@@ -348,7 +347,6 @@ export default function UGCPlatform() {
                     </div>
                   </div>
 
-                  {/* VISUAL 2: Herman Witkin's Cognitive Styles */}
                   <div className="space-y-3">
                     <h3 className="text-xs font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
                       <span>🧩</span> Herman Witkin&apos;s Cognitive Styles: Field-Dependent vs Field-Independent
@@ -365,7 +363,7 @@ export default function UGCPlatform() {
                         <div className="mt-2 space-y-1.5 text-[11px] text-purple-900/90">
                           <p>• Sees the visual/problem field as an <strong>integrated whole</strong>; cannot easily isolate discrete parts.</p>
                           <p>• Strongly influenced by <strong>social context</strong> and peer opinions.</p>
-                          <p>• Prefers <strong>collaborative groups</strong>, interpersonal interactions, and teacher-guided instruction.</p>
+                          <p>• Prefers <strong>collaborative groups</strong>, interpersonal interactions, and teacher guidance.</p>
                           <p>• Learns best when explicit external organizational structures and cues are provided.</p>
                         </div>
                       </div>
@@ -381,14 +379,13 @@ export default function UGCPlatform() {
                         <div className="mt-2 space-y-1.5 text-[11px] text-emerald-900/90">
                           <p>• Easily separates <strong>discrete details</strong> from the surrounding background field.</p>
                           <p>• Highly <strong>autonomous</strong>; relies on internal frames of reference rather than social cues.</p>
-                          <p>• Prefers <strong>individual work</strong>, abstract thinking, mathematical tasks, and independent study.</p>
+                          <p>• Prefers <strong>individual work</strong>, abstract thinking, and mathematical tasks.</p>
                           <p>• Can impose their own cognitive organization onto unorganized information.</p>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* VISUAL 3: Individual Differences Spectrum */}
                   <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                     <h4 className="text-xs font-black uppercase text-slate-700">Determinants of Individual Differences</h4>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-bold">
@@ -411,15 +408,163 @@ export default function UGCPlatform() {
                     </div>
                   </div>
 
-                  {/* VISUAL 4: NTA Exam Trap Box */}
                   <div className="p-4 rounded-xl border-l-4 border-rose-500 bg-rose-50/60 flex items-start gap-3">
                     <span className="text-xl">⚠️</span>
                     <div className="text-xs text-rose-950 space-y-1">
-                      <span className="font-black uppercase tracking-wide text-rose-900">UGC NET High-Trap Trap Question</span>
+                      <span className="font-black uppercase tracking-wide text-rose-900">UGC NET High-Frequency Exam Trap</span>
                       <p className="leading-relaxed">
                         NTA often tests: <em>&quot;Prior experience of the learner is an environmental/social characteristic.&quot;</em> — this is <strong>False</strong>. Prior experience is the single most important <strong>Cognitive Characteristic</strong> determining learning outcomes.
                       </p>
                     </div>
                   </div>
                 </>
-              
+              )}
+
+              {/* Other generic topics */}
+              {selectedTopic !== 'Levels of Teaching' && selectedTopic !== 'Learner Characteristics' && (
+                <div className="bg-indigo-50/60 p-5 rounded-xl border border-indigo-100 text-slate-700 text-xs sm:text-sm leading-relaxed whitespace-pre-line font-medium">
+                  {currentTopicData?.concept || 'Comprehensive theoretical framework for this unit.'}
+                </div>
+              )}
+
+              <div className="pt-2 flex justify-end">
+                <button
+                  onClick={handleLaunchTest}
+                  className="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                  <span>Attempt Verified PYQ Mock Test</span>
+                  <span>➔</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 2: TEST STAGE */}
+          {stage === 'test' && (
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
+              {loading ? (
+                <div className="text-center py-12 text-xs font-bold text-slate-400">Loading topic test items...</div>
+              ) : activeQuestions.length === 0 ? (
+                <div className="text-center py-12 space-y-3">
+                  <p className="text-sm font-bold text-slate-600">No questions found in database for this topic yet.</p>
+                  <button onClick={() => setStage('learn')} className="text-xs text-indigo-600 font-bold hover:underline">
+                    ← Return to Concept Module
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <span className="text-xs font-extrabold text-indigo-600">
+                      Question {currentQIndex + 1} of {activeQuestions.length}
+                    </span>
+                    <span className="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold">
+                      PYQ {activeQuestions[currentQIndex].pyq_year}
+                    </span>
+                  </div>
+
+                  <p className="text-sm sm:text-base font-bold text-slate-900 leading-relaxed whitespace-pre-line">
+                    {activeQuestions[currentQIndex].question_text}
+                  </p>
+
+                  <div className="space-y-2.5">
+                    {[
+                      { key: 'A', text: activeQuestions[currentQIndex].option_a },
+                      { key: 'B', text: activeQuestions[currentQIndex].option_b },
+                      { key: 'C', text: activeQuestions[currentQIndex].option_c },
+                      { key: 'D', text: activeQuestions[currentQIndex].option_d }
+                    ].map((opt) => {
+                      const isChosen = userAnswers[activeQuestions[currentQIndex].id] === opt.key;
+                      return (
+                        <button
+                          key={opt.key}
+                          onClick={() => handleSelectAnswer(activeQuestions[currentQIndex].id, opt.key)}
+                          className={`w-full text-left p-3 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-start gap-3 ${
+                            isChosen ? 'bg-indigo-50 border-indigo-600 text-indigo-900' : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
+                          }`}>
+                          <span className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center text-xs font-black ${
+                            isChosen ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'
+                          }`}>{opt.key}</span>
+                          <span className="pt-0.5">{opt.text}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="flex justify-between items-center pt-4 border-t border-slate-100">
+                    <button
+                      disabled={currentQIndex === 0}
+                      onClick={() => setCurrentQIndex(prev => prev - 1)}
+                      className="px-3 py-1.5 text-xs font-bold text-slate-600 disabled:opacity-30">
+                      ← Previous
+                    </button>
+                    {currentQIndex === activeQuestions.length - 1 ? (
+                      <button
+                        onClick={handleFinishTest}
+                        className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow">
+                        Submit & Verify Readiness
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setCurrentQIndex(prev => prev + 1)}
+                        className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow">
+                        Next Question →
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* STEP 3: READINESS REPORT */}
+          {stage === 'readiness' && (
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
+              <div className={`p-6 rounded-2xl border text-center space-y-2 ${
+                isExamReady ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-rose-50 border-rose-200 text-rose-950'
+              }`}>
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-black tracking-wider uppercase ${
+                  isExamReady ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
+                }`}>
+                  {isExamReady ? 'STATUS: EXAM READY' : 'STATUS: NOT READY'}
+                </span>
+                <h2 className="text-2xl font-black">{isExamReady ? 'Topic Mastered!' : 'Needs Conceptual Revision'}</h2>
+                <p className="text-xs max-w-md mx-auto opacity-80">
+                  {isExamReady 
+                    ? 'Target 80% benchmark achieved on verified past-year questions. You are ready for the next topic.' 
+                    : 'Your score fell below the 80% threshold. Re-read the visual capsules and retake the test.'}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <span className="text-[10px] uppercase font-bold text-slate-400">Score</span>
+                  <div className="text-xl font-black text-slate-800">{totalScore} / {maxMarks}</div>
+                </div>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <span className="text-[10px] uppercase font-bold text-slate-400">Accuracy</span>
+                  <div className="text-xl font-black text-indigo-600">{accuracy}%</div>
+                </div>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <span className="text-[10px] uppercase font-bold text-slate-400">Questions</span>
+                  <div className="text-xl font-black text-slate-800">{correctCount} Correct / {wrongCount} Wrong</div>
+                </div>
+              </div>
+
+              <div className="flex gap-3 justify-end pt-2">
+                <button
+                  onClick={() => setStage('learn')}
+                  className="px-5 py-2.5 border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl transition">
+                  ← Revise Concept Module
+                </button>
+                <button
+                  onClick={handleLaunchTest}
+                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow transition">
+                  Retake Mock Test ➔
+                </button>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}
