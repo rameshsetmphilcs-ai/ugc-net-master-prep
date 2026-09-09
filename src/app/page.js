@@ -1,75 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
-
-// அதிகாரப்பூர்வ UGC NET பாடத்திட்டம் & முக்கிய தலைப்புகள்
-const SYLLABUS_DATA = {
-  'Paper 1': [
-    {
-      unit: 'Unit 1: Teaching Aptitude',
-      topics: [
-        { name: 'Levels of Teaching', concept: 'Memory (Herbart: recall, facts), Understanding (Morrison: relationships, examples), Reflective (Hunt: problem-solving, heuristic inquiry).' },
-        { name: 'Learner Characteristics', concept: 'Cognitive, affective, social traits. Field-Dependent (holistic, cooperative) vs Field-Independent (analytical, independent).' },
-        { name: 'Methods & Evaluation', concept: 'Teacher-centered vs Learner-centered. CBCS grading system, Formative (during process) vs Summative (end term) evaluation.' }
-      ]
-    },
-    {
-      unit: 'Unit 2: Research Aptitude',
-      topics: [
-        { name: 'Types of Research', concept: 'Fundamental (theory creation), Applied (solution testing), Action research (immediate classroom problem solving - Plan-Act-Observe-Reflect).' },
-        { name: 'Research Ethics & Plagiarism', concept: 'UGC Plagiarism Levels: Level 0 (<=10%), Level 1 (10-40% penalties), Level 2 (40-60% withdrawal), Level 3 (>60% suspension).' }
-      ]
-    },
-    {
-      unit: 'Unit 6: Logical Reasoning',
-      topics: [
-        { name: 'Indian Logic: Pramanas', concept: 'Pratyaksha (Perception), Anumana (Inference), Upamana (Comparison), Sabda (Word/Authority), Arthapatti (Presumption), Anupalabdhi (Non-apprehension). Vyapti: invariable relation between Hetu and Sadhya.' }
-      ]
-    }
-  ],
-  'Computer Science': [
-    {
-      unit: 'Unit 8: Theory of Computation',
-      topics: [
-        { name: 'Regular Languages & Automata', concept: 'DFA vs NFA equivalence. Regular expressions, Pumping Lemma for regular languages. Decidable: Emptiness, Finiteness, Equivalence, Membership.' },
-        { name: 'Decidability & Turing Machines', concept: 'Chomsky Hierarchy (Type 3 to Type 0). Halting Problem is Recursively Enumerable but undecidable. Post Correspondence Problem (PCP) is undecidable.' }
-      ]
-    },
-    {
-      unit: 'Unit 5: Operating Systems',
-      topics: [
-        { name: 'Deadlock & Concurrency', concept: '4 Necessary conditions: Mutual Exclusion, Hold & Wait, No Preemption, Circular Wait. Safe state check: Bankers Algorithm. Deadlock condition: Sum(Max_i) < R + N.' },
-        { name: 'Memory & Virtual Memory', concept: 'Paging, TLB hit ratio, Page fault handling. Belady Anomaly in FIFO (more frames = more page faults). LRU stack property.' }
-      ]
-    },
-    {
-      unit: 'Unit 10: Artificial Intelligence',
-      topics: [
-        { name: 'Heuristic Search (A*)', concept: 'A* evaluation f(n) = g(n) + h(n). Admissible: h(n) <= h*(n) (never overestimates). Monotonicity/Consistency guarantees optimal path.' }
-      ]
-    }
-  ],
-  'Commerce': [
-    {
-      unit: 'Unit 2: Accounting and Auditing',
-      topics: [
-        { name: 'Corporate Valuation & Standards', concept: 'Ind AS 115 5-step revenue model. AS 22 accounting for income taxes. Ratio analysis (Liquidity, Solvency, Turnover, Profitability).' }
-      ]
-    },
-    {
-      unit: 'Unit 3: Business Economics',
-      topics: [
-        { name: 'Consumer Behavior & Indifference Curves', concept: 'Law of Diminishing Marginal Utility. Consumer equilibrium: MRS_xy = Px/Py (tangency condition with convexity).' }
-      ]
-    },
-    {
-      unit: 'Unit 10: Income Tax & Corporate Tax',
-      topics: [
-        { name: 'Residential Status & Tax Scope', concept: 'Section 6: Resident (182 days OR 60+365 days). ROR criteria: Resident in >= 2 of 10 years AND 730 days in 7 preceding years. Section 80D medical deductions.' }
-      ]
-    }
-  ]
-};
+import { SYLLABUS_DATA } from './syllabusData'; // இங்குதான் முழு 10 அலகுகளும் உள்ளன!
 
 export default function UGCPlatform() {
   const [selectedPaper, setSelectedPaper] = useState('Paper 1');
@@ -84,7 +16,6 @@ export default function UGCPlatform() {
   const [testHistory, setTestHistory] = useState([]);
   const [isRetestActive, setIsRetestActive] = useState(false);
 
-  // வினாக்களை லோட் செய்தல் (Paper மற்றும் Topic-wise filtering)
   const fetchQuestions = async (topicFilter = 'All') => {
     setLoading(true);
     let query = supabase.from('questions').select('*').eq('paper', selectedPaper);
@@ -194,7 +125,7 @@ export default function UGCPlatform() {
             </div>
             <div>
               <h1 className="font-extrabold text-slate-900 text-sm leading-tight">MasterNET Prep Engine</h1>
-              <p className="text-[10px] text-slate-500">Syllabus & Topic-wise Diagnostic System</p>
+              <p className="text-[10px] text-slate-500">10-Unit Complete Syllabus & Diagnostic System</p>
             </div>
           </div>
           <button 
@@ -228,55 +159,61 @@ export default function UGCPlatform() {
           </div>
         ) : (
           <>
-            {/* SCREEN 1: SYLLABUS BROWSER & UNIT SELECTION */}
+            {/* SCREEN 1: ALL 10 UNITS */}
             {screen === 'syllabus' && (
               <div className="space-y-4">
                 <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm">
                   <div className="flex justify-between items-center">
-                    <span className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">{selectedPaper} Syllabus Structure</span>
+                    <span className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">{selectedPaper} • Complete 10 Units</span>
                     <button 
                       onClick={() => { setSelectedTopic('All'); fetchQuestions('All'); setScreen('test'); }}
                       className="text-xs font-bold text-indigo-600 hover:underline">
-                      Practice All Units Combined ({activeQuestions.length} PYQs) ➔
+                      Mock Test All Units Combined ➔
                     </button>
                   </div>
                   <h2 className="text-xl font-black text-slate-900 mt-1">Select Unit & Topic to Master</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">Choose an individual topic to review concepts and solve topic-specific PYQs.</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Choose any topic below to read its core concepts and practice verified PYQs.</p>
                 </div>
 
                 <div className="space-y-4">
-                  {SYLLABUS_DATA[selectedPaper]?.map((unitItem, uIdx) => (
-                    <div key={uIdx} className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3">
-                      <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-slate-900 text-white font-black text-[10px] flex items-center justify-center">
-                          {uIdx + 1}
-                        </span>
-                        <h3 className="font-extrabold text-slate-900 text-sm">{unitItem.unit}</h3>
-                      </div>
+                  {SYLLABUS_DATA && SYLLABUS_DATA[selectedPaper] && SYLLABUS_DATA[selectedPaper].length > 0 ? (
+                    SYLLABUS_DATA[selectedPaper].map((unitItem, uIdx) => (
+                      <div key={uIdx} className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3">
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 rounded-full bg-slate-900 text-white font-black text-xs flex items-center justify-center">
+                            {uIdx + 1}
+                          </span>
+                          <h3 className="font-extrabold text-slate-900 text-sm">{unitItem.unit}</h3>
+                        </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-                        {unitItem.topics.map((t, tIdx) => (
-                          <div 
-                            key={tIdx}
-                            onClick={() => handleSelectTopic(t.name)}
-                            className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/70 hover:bg-indigo-50/50 hover:border-indigo-200 transition cursor-pointer flex flex-col justify-between gap-2">
-                            <div>
-                              <div className="flex justify-between items-start">
-                                <h4 className="font-bold text-slate-800 text-xs">{t.name}</h4>
-                                <span className="text-[10px] font-bold text-indigo-600">Start ➔</span>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                          {unitItem.topics.map((t, tIdx) => (
+                            <div 
+                              key={tIdx}
+                              onClick={() => handleSelectTopic(t.name)}
+                              className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/70 hover:bg-indigo-50/50 hover:border-indigo-200 transition cursor-pointer flex flex-col justify-between gap-2">
+                              <div>
+                                <div className="flex justify-between items-start">
+                                  <h4 className="font-bold text-slate-800 text-xs">{t.name}</h4>
+                                  <span className="text-[10px] font-bold text-indigo-600">Start ➔</span>
+                                </div>
+                                <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">{t.concept}</p>
                               </div>
-                              <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">{t.concept}</p>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="p-8 bg-white rounded-xl text-center text-slate-500 text-sm">
+                      Syllabus data loading...
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             )}
 
-            {/* SCREEN 2: TOPIC CONCEPT CAPSULE & PRE-TEST BRIEF */}
+            {/* SCREEN 2: TOPIC CONCEPT CAPSULE */}
             {screen === 'notes' && (
               <div className="space-y-5">
                 <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-2">
@@ -284,14 +221,14 @@ export default function UGCPlatform() {
                     <button 
                       onClick={() => setScreen('syllabus')}
                       className="text-xs font-bold text-slate-500 hover:text-slate-800">
-                      ← Back to Syllabus
+                      ← Back to Syllabus Map
                     </button>
                     <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                       Topic Focus
                     </span>
                   </div>
                   <h2 className="text-xl font-black text-slate-900">{selectedTopic}</h2>
-                  <p className="text-xs text-slate-500">Review concept brief before beginning the topic-focused assessment.</p>
+                  <p className="text-xs text-slate-500">Review concept summary before attempting questions.</p>
                 </div>
 
                 <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm space-y-3">
@@ -313,7 +250,7 @@ export default function UGCPlatform() {
               </div>
             )}
 
-            {/* SCREEN 3: TOPIC-WISE TEST ENGINE */}
+            {/* SCREEN 3: TEST ENGINE */}
             {screen === 'test' && activeQuestions.length > 0 && (
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-5">
                 <div className="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -378,7 +315,7 @@ export default function UGCPlatform() {
               </div>
             )}
 
-            {/* SCREEN 4: TOPIC DIAGNOSTIC ANALYTICS */}
+            {/* SCREEN 4: ANALYTICS & HISTORY */}
             {screen === 'analytics' && (
               <div className="space-y-5">
                 <div className={`p-4 sm:p-6 rounded-2xl border ${isConceptCleared ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'} shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3`}>
@@ -495,7 +432,7 @@ export default function UGCPlatform() {
                   </div>
                 )}
 
-                {/* Explanation Modal */}
+                {/* Solution Modal */}
                 {selectedModalQ && (
                   <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
                     <div className="bg-white max-w-sm w-full rounded-2xl p-5 shadow-xl border border-slate-100 space-y-3 text-xs">
