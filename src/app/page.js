@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
-import { SYLLABUS_DATA } from './syllabusData';
 
 // அதிகாரப்பூர்வ UGC NET பாடத்திட்டம் & முக்கிய தலைப்புகள்
 const SYLLABUS_DATA = {
