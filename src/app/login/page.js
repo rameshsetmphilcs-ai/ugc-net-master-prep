@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { enforceSingleDevice, claimCurrentDevice } from '@/lib/deviceAuth';
+import { supabase } from '../lib/supabase';
+import { registerSession } from '../lib/deviceAuth';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
