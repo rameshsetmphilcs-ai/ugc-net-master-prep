@@ -302,150 +302,124 @@ export default function UGCPlatform() {
                     </div>
                   </div>
                 </>
-              ) : (
-                <div className="bg-indigo-50/60 p-5 rounded-xl border border-indigo-100 text-slate-700 text-xs sm:text-sm leading-relaxed whitespace-pre-line font-medium">
-                  {currentTopicData?.concept || 'Comprehensive theoretical framework for this unit.'}
-                </div>
-              )}
-
-              <div className="pt-2 flex justify-end">
-                <button
-                  onClick={handleLaunchTest}
-                  className="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2">
-                  <span>Attempt Verified PYQ Mock Test</span>
-                  <span>➔</span>
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 2: MOCK TEST ENGINE */}
-          {stage === 'test' && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
-              {loading ? (
-                <div className="text-center py-12 text-xs font-bold text-slate-400">Loading topic test items...</div>
-              ) : activeQuestions.length === 0 ? (
-                <div className="text-center py-12 space-y-3">
-                  <p className="text-sm font-bold text-slate-600">No questions found in database for this topic yet.</p>
-                  <button onClick={() => setStage('learn')} className="text-xs text-indigo-600 font-bold hover:underline">
-                    ← Return to Concept Module
-                  </button>
-                </div>
-              ) : (
+              ) : selectedTopic === 'Learner Characteristics' ? (
                 <>
-                  <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-                    <span className="text-xs font-extrabold text-indigo-600">
-                      Question {currentQIndex + 1} of {activeQuestions.length}
-                    </span>
-                    <span className="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold">
-                      PYQ {activeQuestions[currentQIndex].pyq_year}
-                    </span>
+                  {/* VISUAL 1: Andragogy vs Pedagogy */}
+                  <div className="space-y-3">
+                    <h3 className="text-xs font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
+                      <span>👥</span> Pedagogical vs Andragogical Orientation (Knowles Model)
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="p-4 rounded-xl border-2 border-indigo-200 bg-indigo-50/60 flex flex-col justify-between">
+                        <div>
+                          <span className="text-[10px] font-black bg-indigo-200 text-indigo-900 px-2 py-0.5 rounded w-max inline-block mb-2">
+                            PEDAGOGY • ADOLESCENTS (12–18 YRS)
+                          </span>
+                          <h4 className="text-sm font-extrabold text-indigo-950">Adolescent Learners</h4>
+                          <ul className="mt-2 space-y-1.5 text-[11px] text-indigo-900/90 font-medium">
+                            <li><strong>Academic:</strong> Prescribed syllabus-bound; teacher decides what & how to learn.</li>
+                            <li><strong>Social:</strong> High peer-conformity; sensitive to peer approval and group identity.</li>
+                            <li><strong>Emotional:</strong> Mood fluctuations (Storm & Stress); seeking self-identity (Erikson).</li>
+                            <li><strong>Cognitive:</strong> Piaget&apos;s Formal Operational; hypothetical-deductive reasoning.</li>
+                          </ul>
+                        </div>
+                        <div className="mt-3 pt-2 border-t border-indigo-200/60 text-[10px] font-bold text-indigo-800">
+                          Motivation: Extrinsic (Grades, Parent/Teacher approval)
+                        </div>
+                      </div>
+
+                      <div className="p-4 rounded-xl border-2 border-teal-200 bg-teal-50/60 flex flex-col justify-between">
+                        <div>
+                          <span className="text-[10px] font-black bg-teal-200 text-teal-900 px-2 py-0.5 rounded w-max inline-block mb-2">
+                            ANDRAGOGY • ADULT LEARNERS
+                          </span>
+                          <h4 className="text-sm font-extrabold text-teal-950">Adult Learners (Malcolm Knowles)</h4>
+                          <ul className="mt-2 space-y-1.5 text-[11px] text-teal-900/90 font-medium">
+                            <li><strong>Academic:</strong> Self-directed; task/problem-centered rather than subject-centered.</li>
+                            <li><strong>Life Experience:</strong> Rich reservoir of experiential knowledge used as learning resource.</li>
+                            <li><strong>Emotional:</strong> Highly self-motivated, autonomous, pragmatic, goal-driven.</li>
+                            <li><strong>Immediate Application:</strong> Needs immediate relevance to solve current career/life problems.</li>
+                          </ul>
+                        </div>
+                        <div className="mt-3 pt-2 border-t border-teal-200/60 text-[10px] font-bold text-teal-800">
+                          Motivation: Intrinsic (Self-esteem, Job performance)
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <p className="text-sm sm:text-base font-bold text-slate-900 leading-relaxed whitespace-pre-line">
-                    {activeQuestions[currentQIndex].question_text}
-                  </p>
+                  {/* VISUAL 2: Herman Witkin's Cognitive Styles */}
+                  <div className="space-y-3">
+                    <h3 className="text-xs font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
+                      <span>🧩</span> Herman Witkin&apos;s Cognitive Styles: Field-Dependent vs Field-Independent
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="p-4 rounded-xl border-2 border-purple-200 bg-purple-50/60">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[10px] font-black bg-purple-200 text-purple-900 px-2 py-0.5 rounded">
+                            HOLISTIC / GLOBAL
+                          </span>
+                          <span className="text-xs font-bold text-purple-700">Socially Oriented</span>
+                        </div>
+                        <h4 className="text-sm font-extrabold text-purple-950">Field-Dependent (FD)</h4>
+                        <div className="mt-2 space-y-1.5 text-[11px] text-purple-900/90">
+                          <p>• Sees the visual/problem field as an <strong>integrated whole</strong>; cannot easily isolate discrete parts.</p>
+                          <p>• Strongly influenced by <strong>social context</strong> and peer opinions.</p>
+                          <p>• Prefers <strong>collaborative groups</strong>, interpersonal interactions, and teacher-guided instruction.</p>
+                          <p>• Learns best when explicit external organizational structures and cues are provided.</p>
+                        </div>
+                      </div>
 
-                  <div className="space-y-2.5">
-                    {[
-                      { key: 'A', text: activeQuestions[currentQIndex].option_a },
-                      { key: 'B', text: activeQuestions[currentQIndex].option_b },
-                      { key: 'C', text: activeQuestions[currentQIndex].option_c },
-                      { key: 'D', text: activeQuestions[currentQIndex].option_d }
-                    ].map((opt) => {
-                      const isChosen = userAnswers[activeQuestions[currentQIndex].id] === opt.key;
-                      return (
-                        <button
-                          key={opt.key}
-                          onClick={() => handleSelectAnswer(activeQuestions[currentQIndex].id, opt.key)}
-                          className={`w-full text-left p-3 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-start gap-3 ${
-                            isChosen ? 'bg-indigo-50 border-indigo-600 text-indigo-900' : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
-                          }`}>
-                          <span className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center text-xs font-black ${
-                            isChosen ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'
-                          }`}>{opt.key}</span>
-                          <span className="pt-0.5">{opt.text}</span>
-                        </button>
-                      );
-                    })}
+                      <div className="p-4 rounded-xl border-2 border-emerald-200 bg-emerald-50/60">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[10px] font-black bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded">
+                            ANALYTICAL / DISCRETE
+                          </span>
+                          <span className="text-xs font-bold text-emerald-700">Autonomously Oriented</span>
+                        </div>
+                        <h4 className="text-sm font-extrabold text-emerald-950">Field-Independent (FI)</h4>
+                        <div className="mt-2 space-y-1.5 text-[11px] text-emerald-900/90">
+                          <p>• Easily separates <strong>discrete details</strong> from the surrounding background field.</p>
+                          <p>• Highly <strong>autonomous</strong>; relies on internal frames of reference rather than social cues.</p>
+                          <p>• Prefers <strong>individual work</strong>, abstract thinking, mathematical tasks, and independent study.</p>
+                          <p>• Can impose their own cognitive organization onto unorganized information.</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex justify-between items-center pt-4 border-t border-slate-100">
-                    <button
-                      disabled={currentQIndex === 0}
-                      onClick={() => setCurrentQIndex(prev => prev - 1)}
-                      className="px-3 py-1.5 text-xs font-bold text-slate-600 disabled:opacity-30">
-                      ← Previous
-                    </button>
-                    {currentQIndex === activeQuestions.length - 1 ? (
-                      <button
-                        onClick={handleFinishTest}
-                        className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow">
-                        Submit & Verify Readiness
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => setCurrentQIndex(prev => prev + 1)}
-                        className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow">
-                        Next Question →
-                      </button>
-                    )}
+                  {/* VISUAL 3: Individual Differences Spectrum */}
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <h4 className="text-xs font-black uppercase text-slate-700">Determinants of Individual Differences</h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-bold">
+                      <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                        <div className="text-indigo-600">Cognitive</div>
+                        <div className="text-[10px] text-slate-500 font-medium mt-0.5">IQ, Memory Span, Aptitude</div>
+                      </div>
+                      <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                        <div className="text-rose-600">Affective</div>
+                        <div className="text-[10px] text-slate-500 font-medium mt-0.5">Locus of Control, Self-efficacy</div>
+                      </div>
+                      <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                        <div className="text-amber-600">Physiological</div>
+                        <div className="text-[10px] text-slate-500 font-medium mt-0.5">Sensory Modalities, Age</div>
+                      </div>
+                      <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                        <div className="text-teal-600">Sociocultural</div>
+                        <div className="text-[10px] text-slate-500 font-medium mt-0.5">Language, Prior Experience</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* VISUAL 4: NTA Exam Trap Box */}
+                  <div className="p-4 rounded-xl border-l-4 border-rose-500 bg-rose-50/60 flex items-start gap-3">
+                    <span className="text-xl">⚠️</span>
+                    <div className="text-xs text-rose-950 space-y-1">
+                      <span className="font-black uppercase tracking-wide text-rose-900">UGC NET High-Trap Trap Question</span>
+                      <p className="leading-relaxed">
+                        NTA often tests: <em>&quot;Prior experience of the learner is an environmental/social characteristic.&quot;</em> — this is <strong>False</strong>. Prior experience is the single most important <strong>Cognitive Characteristic</strong> determining learning outcomes.
+                      </p>
+                    </div>
                   </div>
                 </>
-              )}
-            </div>
-          )}
-
-          {/* STEP 3: READINESS ANALYTICS REPORT */}
-          {stage === 'readiness' && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
-              <div className={`p-6 rounded-2xl border text-center space-y-2 ${
-                isExamReady ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-rose-50 border-rose-200 text-rose-950'
-              }`}>
-                <span className={`inline-block px-3 py-1 rounded-full text-xs font-black tracking-wider uppercase ${
-                  isExamReady ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
-                }`}>
-                  {isExamReady ? 'STATUS: EXAM READY' : 'STATUS: NOT READY'}
-                </span>
-                <h2 className="text-2xl font-black">{isExamReady ? 'Topic Mastered!' : 'Needs Conceptual Revision'}</h2>
-                <p className="text-xs max-w-md mx-auto opacity-80">
-                  {isExamReady 
-                    ? 'Target 80% benchmark achieved on verified past-year questions. You are ready for the next topic.' 
-                    : 'Your score fell below the 80% threshold. Re-read the visual capsules and retake the test.'}
-                </p>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Score</span>
-                  <div className="text-xl font-black text-slate-800">{totalScore} / {maxMarks}</div>
-                </div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Accuracy</span>
-                  <div className="text-xl font-black text-indigo-600">{accuracy}%</div>
-                </div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Questions</span>
-                  <div className="text-xl font-black text-slate-800">{correctCount} Correct / {wrongCount} Wrong</div>
-                </div>
-              </div>
-
-              <div className="flex gap-3 justify-end pt-2">
-                <button
-                  onClick={() => setStage('learn')}
-                  className="px-5 py-2.5 border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl transition">
-                  ← Revise Concept Module
-                </button>
-                <button
-                  onClick={handleLaunchTest}
-                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow transition">
-                  Retake Mock Test ➔
-                </button>
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
-  );
-}
+              
